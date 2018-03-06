@@ -7,7 +7,7 @@ var height;
 var raycaster;
 var mouse = new THREE.Vector2(-1, -1);
 var eventY;
-var cubeWidth = 32;
+var cubeWidth = 40;
 
 var initTime = 100;
 var initCubeSize = 20;
@@ -37,13 +37,12 @@ var animateId;
 var fade = 0;
 
 function initThree() {
-
     width = window.innerWidth;
     height = window.innerHeight - 50;
     renderer = new THREE.WebGLRenderer({
         antialias: true
     });
-    renderer.setClearColor(0xf0f0f0);
+    renderer.setClearColor(0x000000);
     renderer.setSize(width, height);
     document.getElementById('canvasFrame').appendChild(renderer.domElement);
 
@@ -52,10 +51,9 @@ function initThree() {
 
     scene = new THREE.Scene();
 
-    light = new THREE.DirectionalLight(0xffffff, 1);
+    light = new THREE.DirectionalLight(0xFFFFFF, 1);
     light.position.set(1, 1, 1).normalize();
     scene.add(light);
-
     posUtil = new SearchX.PosUtil({
         width: width * 0.8,
         height: height,
@@ -77,7 +75,7 @@ function initThree() {
 function initCube() {
 
     textIndex = parseInt(Math.random() * SearchX.Pool.texts.length);
-    showMaterial = getShowMaterial(SearchX.Pool.texts[textIndex][0]);
+    // showMaterial = getShowMaterial(SearchX.Pool.texts[textIndex][0]);
     showMaterial2 = getShowMaterial(SearchX.Pool.texts[textIndex][1]);
     selectMaterial = getSelectMaterial(SearchX.Pool.texts[textIndex][0]);
     selectMaterial2 = getSelectMaterial(SearchX.Pool.texts[textIndex][1]);
@@ -88,6 +86,8 @@ function initCube() {
     selectIndex = parseInt(Math.random() * cubeSize);
     var cube, mesh;
     for (var i = 0; i < cubeSize; i++) {
+        showMaterial = getShowMaterial(SearchX.Pool.texts[textIndex][0]);
+
         if (cubeTable.containsKey(i)) {
             cube = cubeTable.get(i);
             if (i === selectIndex) {
@@ -113,7 +113,7 @@ function initCube() {
 
 function initMsg() {
     target = SearchX.Pool.texts[textIndex][1];
-    $("#target").html(target);
+    $("#target").html(SearchX.Pool.texts[textIndex][2]);
     time = initTime;
     $("#time").html(time);
     score = 0;
@@ -237,7 +237,6 @@ function reset() {
     } else {
 
         textIndex = parseInt(Math.random() * SearchX.Pool.texts.length);
-        showMaterial = getShowMaterial(SearchX.Pool.texts[textIndex][0]);
         showMaterial2 = getShowMaterial(SearchX.Pool.texts[textIndex][1]);
         selectMaterial = getSelectMaterial(SearchX.Pool.texts[textIndex][0]);
         selectMaterial2 = getSelectMaterial(SearchX.Pool.texts[textIndex][1]);
@@ -255,6 +254,7 @@ function reset() {
         scene.add(lastCube.mesh)
 
         for (var i = 0; i < cubeSize; i++) {
+            showMaterial = getShowMaterial(SearchX.Pool.texts[textIndex][0]);
             if (i == selectIndex) {
                 cubeTable.get(i).mesh.material = showMaterial2;
             } else {
@@ -264,7 +264,7 @@ function reset() {
     }
 
     target = SearchX.Pool.texts[textIndex][1];
-    $("#target").html(target);
+    $("#target").html(SearchX.Pool.texts[textIndex][2]);
 }
 
 function lost() {
@@ -315,15 +315,21 @@ function onWindowResize() {
 }
 
 function getShowMaterial(text) {
-    return SearchX.Pool.getMaterial(text, "#ffffff", "#5d4a36", 2, cubeWidth);
+    var randomColor = '#' + (function(color){
+        return (color +=  '0123456789abcdef'[Math.floor(Math.random()*16)])
+        && (color.length == 6) ?  color : arguments.callee(color);
+    })('');
+    
+    return SearchX.Pool.getMaterial(text, randomColor, randomColor, 2, cubeWidth);
 }
 
 function getSelectMaterial(text) {
-    return SearchX.Pool.getMaterial(text, "#ffffff", "red", 3, cubeWidth);
+    return SearchX.Pool.getMaterial(text, "#ffffff", "#ffffff", 3, cubeWidth);
 }
 
 function onClick(event) {
     event.preventDefault();
+
     if (selectedMesh && selectedMesh.name == selectIndex) {
         scene.remove(selectedMesh);
         selectedMesh = null;
