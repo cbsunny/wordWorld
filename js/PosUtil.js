@@ -1,8 +1,4 @@
-/**
- * 为物体产生随机位置
- * @param parameters
- * @constructor
- */
+// 产生随机位置
 SearchX.PosUtil = function (parameters) {
     this.width = parameters.width || 1000;
     this.height = parameters.height || 500;
@@ -16,12 +12,6 @@ SearchX.PosUtil = function (parameters) {
     this.space = parseInt(this.maxNumber / this.size);
 }
 
-/**
- * 产生index个物体的随机位置
- * 原理是将maxNumber分为size份，每份选取一个随机数
- * @param index 从0开始
- * @returns {THREE.Vector3}
- */
 SearchX.PosUtil.prototype.getPosition = function (index) {
     var num = parseInt(Math.random() * this.space) + this.space * index;
 
