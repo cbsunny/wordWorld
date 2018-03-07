@@ -7,7 +7,7 @@ var height;
 var raycaster;
 var mouse = new THREE.Vector2(-1, -1);
 var eventY;
-var cubeWidth = 40;
+var cubeWidth = 50;
 
 var initTime = 100;
 var initCubeSize = 20;

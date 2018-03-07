@@ -7,7 +7,11 @@ SearchX.Pool.geomertries = new Hashtable();
 SearchX.Pool.materials = new Hashtable();
 
 SearchX.Pool.texts = [
-    ["crew","chew","咀嚼"]
+    ["crew","chew","咀嚼"],c
+    ["quite","quiet","安静地"],
+    ["sweet","sweat","汗水"],
+    ["prey","pray","祈祷"],
+    ["cite","site","场所"]
 ];
 
 // 定义Geomerey
